@@ -1,6 +1,6 @@
 # CBX
 
-This project utilises the [IDI CPP Template]((https://github.com/IDI-Systems/idi-cpp-template) licensed under MIT.
+This project utilises the [IDI CPP Template](https://github.com/IDI-Systems/idi-cpp-template) licensed under MIT.
 
 ## Build Instructions
 
