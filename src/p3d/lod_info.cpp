@@ -7,8 +7,8 @@
  */
 #include "lod_info.hpp"
 #include "read_helpers.hpp"
+#include "logging.hpp"
 
-#include <easylogging++.h>
 #include <cassert>
 #include <algorithm>
 
@@ -22,9 +22,9 @@ p3d::Lod::Lod(std::istream & stream_, uint32_t id_, uint32_t version_) : id(id_)
     for (uint32_t x = 0; x < temp_count; x++) {
         proxies.push_back(std::make_shared<Proxy>(stream_, version_));
     }
-    LOG(DEBUG) << "Found Proxies:";
+    spd_logging::logger->debug("Found Proxies:");
     for (auto & proxy : proxies) {
-        LOG(DEBUG) << "\t" << proxy->name;
+        spd_logging::logger->debug("\t{0}", proxy->name);
     }
 
     compressed<uint32_t> item(stream_, false, false);
@@ -64,7 +64,7 @@ p3d::Lod::Lod(std::istream & stream_, uint32_t id_, uint32_t version_) : id(id_)
 
         temp = read_string(stream_);;
         textures.push_back(temp);
-        LOG(DEBUG) << "Found texture: " << temp << " pos: " << stream_.tellg();
+        spd_logging::logger->debug("Found texture: {0} pos: {1}", temp, stream_.tellg());
     }
 
     //Materials
@@ -76,7 +76,7 @@ p3d::Lod::Lod(std::istream & stream_, uint32_t id_, uint32_t version_) : id(id_)
     edges.mlod = compressed<uint32_t>(stream_, true, false, version_).data;
     edges.vertex = compressed<uint32_t>(stream_, true, false, version_).data;
 
-    LOG(DEBUG) << "Finished reading material: " << stream_.tellg();
+    spd_logging::logger->debug("Finished reading material: {0}", stream_.tellg());
     // @TODO: THIS IS OFF WTF?!
     // The first face is coming up null, so we missed something
     // Faces magic
@@ -102,14 +102,14 @@ p3d::Lod::Lod(std::istream & stream_, uint32_t id_, uint32_t version_) : id(id_)
     }
 
     // named properties
-    LOG(DEBUG) << "Loaded properties";
+    spd_logging::logger->debug("Loaded properties");
     stream_.read((char *)&temp_count, sizeof(uint32_t));
     for (uint32_t x = 0; x < temp_count; x++) {
         const std::string key = read_string(stream_);
         const std::string value = read_string(stream_);
 
         named_properties[key] = value;
-        LOG(DEBUG) << "\t\t" << key << "->" << value;
+        spd_logging::logger->debug("\t\t{0} -> {1}", key, value);
     }
 
     stream_.read((char *)&temp_count, sizeof(uint32_t));
@@ -269,5 +269,5 @@ p3d::Proxy::Proxy(std::istream &stream_, uint32_t version_) {
     stream_.read((char *)&bone_id, sizeof(uint32_t));
     stream_.read((char *)&section_id, sizeof(uint32_t));
 
-    LOG(DEBUG) << "Proxy: [" << name << "]";
+    spd_logging::logger->debug("Proxy: [{0}]", name);
 }

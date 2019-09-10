@@ -182,7 +182,7 @@ bool wrp::Landscape::process(std::istream &stream_) {
             elevations = compressed<float32_t>(stream_, map_size_x * map_size_y, true, false, version);
         }
     } catch (std::exception& e) {
-        LOG(ERROR) << "WRP Parsing exception: " << e.what();
+        spd_logging::logger->error("WRP Parsing exception: {0}", e.what());
         //Insert 1 peak in the middle.
         peaks.clear();
         peaks.push_back(vec3_fp32_t((map_size_x * map_grid_size)/2.0f, (map_size_y * map_grid_size)/2.0f, 0.0f));

@@ -1,6 +1,5 @@
 #include "compressed_base.hpp"
-
-#include <easylogging++.h>
+#include "logging.hpp"
 
 #include <limits.h>
 #include <stddef.h>
@@ -62,7 +61,7 @@ namespace cbx {
                 expected_size_);
         if (result < 0) {
             delete[] buffer;
-            LOG(ERROR) << "WRP parsing decompression failed";
+            spd_logging::logger->error("WRP parsing decompression failed");
             throw dec_failure;
         }
         in.seekg(save_pos);

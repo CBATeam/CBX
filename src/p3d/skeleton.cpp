@@ -8,8 +8,8 @@
 #include "model.hpp"
 #include "read_helpers.hpp"
 #include "skeleton.hpp"
+#include "logging.hpp"
 
-#include <easylogging++.h>
 #include <sstream>
 
 using namespace cbx;
@@ -48,7 +48,7 @@ p3d::Skeleton::Skeleton(std::istream & stream_, const uint32_t lod_count_) : siz
 
     // Skip a byte because!
     //stream_.seekg(1, stream_.cur);
-    LOG(DEBUG) << "Skeleton loaded: " << name;
+    spd_logging::logger->debug("Skeleton loaded {0}", name);
     char junk;
     stream_.read((char *)&junk, sizeof(uint8_t));
 }

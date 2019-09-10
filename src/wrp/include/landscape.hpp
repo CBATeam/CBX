@@ -11,8 +11,8 @@
 #include "compressed_base.hpp"
 #include "types.hpp"
 #include "vector.hpp"
+#include "logging.hpp"
 
-#include <easylogging++.h>
 #include <fstream>
 #include <vector>
 #include <memory>
@@ -76,7 +76,7 @@ namespace cbx {
                         if (xyzCompressed) {
                             const int32_t result = _decompress_safe(stream_, size_ * sizeof(float32_t));
                             if (result < 0) {
-                                LOG(ERROR) << "Decompress error: " << result;
+                                spd_logging::logger->error("Decompression error: {0}", result);
                             }
                             uint32_t * ptr = (uint32_t *)(_data.get());
                             for (uint32_t x = 0; x < size_; x++) {
@@ -86,7 +86,7 @@ namespace cbx {
                         } else {
                             const int32_t result = _decompress_safe(stream_, size_ * sizeof(float32_t) * 3u);
                             if (result < 0) {
-                                LOG(ERROR) << "Decompress error: " << result;
+                                spd_logging::logger->error("Decompression error: {0}", result);
                             }
                             float32_t * ptr = (float32_t *)(_data.get());
                             for (uint32_t x = 0; x < size_ * 3; x += 3) {
