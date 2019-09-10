@@ -38,8 +38,8 @@ p3d::Lod::Lod(std::istream & stream_, uint32_t id_, uint32_t version_) : id(id_)
         uint32_t link_count;
         std::vector<uint32_t> links;
         stream_.read((char *)&link_count, sizeof(uint32_t));
-        for (uint32_t x = 0; x < link_count; x++) {
-            uint32_t val;
+        for (uint32_t jidx = 0; jidx < link_count; jidx++) {
+            uint32_t val = 0u;
             stream_.read((char *)&val, sizeof(uint32_t));
             links.push_back(val);
         }
