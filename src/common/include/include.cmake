@@ -7,6 +7,7 @@
 cbx_add_includes(
     "${CMAKE_CURRENT_LIST_DIR}/constants.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/logging.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/membuf.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/transform_matrix.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/types.hpp"
     "${CMAKE_CURRENT_LIST_DIR}/vector.hpp"
