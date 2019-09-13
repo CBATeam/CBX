@@ -7,8 +7,8 @@
  */
 
 #include "parser.hpp"
+#include "logging.hpp"
 
-#include <easylogging++.h>
 #include <fstream>
 #include <memory>
 
@@ -20,7 +20,7 @@ p3d::model_p p3d::parser::load(const std::string &filepath_) {
 
     filestream.open(filepath_, std::ios::binary | std::ios::in);
     if (!filestream.good()) {
-        LOG(ERROR) << "Cannot open file";
+        spd_logging::logger->error("Cannot open file: {0}", filepath_);
         return _model;
     }
 

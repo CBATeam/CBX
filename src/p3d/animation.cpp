@@ -8,8 +8,7 @@
 
 #include "read_helpers.hpp"
 #include "animation.hpp"
-
-#include <easylogging++.h>
+#include "logging.hpp"
 
 using namespace cbx;
 
@@ -69,5 +68,5 @@ p3d::Animation::Animation(std::istream &stream_, uint32_t version_) {
             break;
     }
 
-    LOG(DEBUG) << "Animation loaded: " << name << ", source=" << source;
+    spd_logging::logger->info("Animation loaded: {0}, source={1}", name, source);
 }

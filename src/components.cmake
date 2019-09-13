@@ -9,4 +9,5 @@
 
 add_subdirectory("common")
 add_subdirectory("p3d")
+add_subdirectory("pbo")
 add_subdirectory("wrp")

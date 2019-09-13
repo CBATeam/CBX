@@ -1,6 +1,5 @@
 #include "compressed_base.hpp"
-
-#include <easylogging++.h>
+#include "logging.hpp"
 
 #include <limits.h>
 #include <stddef.h>
@@ -62,7 +61,7 @@ namespace cbx {
                 expected_size_);
         if (result < 0) {
             delete[] buffer;
-            LOG(ERROR) << "WRP parsing decompression failed";
+            spd_logging::logger->error("WRP parsing decompression failed");
             throw dec_failure;
         }
         in.seekg(save_pos);
@@ -111,7 +110,7 @@ namespace cbx {
                     if (ip >= (in + OutLen + 1024))
                         throw dec_failure;
                 }
-                t += 15 + *ip++;
+                t += static_cast<size_t>(15 + *ip++);
             }
             COMPRESS_ASSERT(t > 0);
             NEED_OP(t + 3);
@@ -202,7 +201,7 @@ namespace cbx {
                         COMPRESS_ASSERT(t == 1);
                         if (m_pos != op_end)
                             return LZO_E_LOOKBEHIND_OVERRUN;
-                        return ip - in;
+                        return static_cast<int32_t>(ip - in);
                     }
                     m_pos -= 0x4000;
                 } else {
@@ -303,7 +302,7 @@ namespace cbx {
                 }
                 csum += (unsigned char) c;
                 // save byte
-                *dst++ = c;
+                *dst++ = (char) c;
                 lensb--;
                 // continue decompression
                 text_buf[r] = (unsigned char) c;
@@ -336,7 +335,7 @@ namespace cbx {
                     //c = (byte) text_buf[ii & (N - 1)]; <=== original code. WTF?!
                     csum += (unsigned char) c;
                     // save byte
-                    *dst++ = c;
+                    *dst++ = (char) c;
                     lensb--;
                     // continue decompression
                     text_buf[r] = (unsigned char) c;

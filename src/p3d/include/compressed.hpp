@@ -11,8 +11,8 @@
 #include "vector.hpp"
 #include "read_helpers.hpp"
 #include "compressed_base.hpp"
+#include "logging.hpp"
 
-#include <easylogging++.h>
 #include <cassert>
 
 namespace cbx {
@@ -82,8 +82,8 @@ namespace cbx {
                         if (xyzCompressed) {
                             int32_t result = _decompress_safe(stream_, size * sizeof(float32_t));
                             if (result < 0) {
+                                spd_logging::logger->error("Decompression failed");
                                 assert(false);
-                                LOG(ERROR) << "Decompression failed";
                             }
                             uint32_t * ptr = (uint32_t *)(_data.get());
                             for (uint32_t x = 0; x < size; x++) {
@@ -93,8 +93,8 @@ namespace cbx {
                         } else {
                             int32_t result = _decompress_safe(stream_, size * sizeof(float32_t) * 3);
                             if (result < 0) {
+                                spd_logging::logger->error("Decompression failed");
                                 assert(false);
-                                LOG(ERROR) << "Decompression failed";
                             }
                             float32_t * ptr = (float32_t *)(_data.get());
                             for (uint32_t x = 0; x < size*3; x+=3) {
@@ -147,8 +147,8 @@ namespace cbx {
                     if ((size * sizeof(float32_t) * 2 >= 1024 && compressed_  && version < 64) || (flag && compressed_)) {
                         int32_t result = _decompress_safe(stream_, size * sizeof(float32_t) * 2);
                         if (result < 0) {
+                            spd_logging::logger->error("Decompression failed");
                             assert(false);
-                            LOG(ERROR) << "Decompression failed";
                         }
                         float32_t * ptr = (float32_t *)(_data.get());
                         for (uint32_t x = 0; x < size * 2; x += 2) {

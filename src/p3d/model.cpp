@@ -7,8 +7,8 @@
  */
 #include "model.hpp"
 #include "read_helpers.hpp"
+#include "logging.hpp"
 
-#include <easylogging++.h>
 #include <algorithm>
 
 using namespace cbx;
@@ -82,18 +82,20 @@ p3d::Model::Model(std::istream &stream_, const std::string &filename_) {
             }
         }
     }
-    // LOD indexes
+    // LOD indexes: Start LOD
     for (uint32_t lod = 0; lod < lod_count; lod++) {
         uint32_t offset;
         stream_.read((char *)&offset, sizeof(uint32_t));
-        start_lod.push_back(offset);
-        LOG(DEBUG) << "LOD Offset: #" << lod << " : " << offset;
+        start_lod.push_back(offset); // Start LOD
+        spd_logging::logger->debug("LOD Offset: #{0} : {1}", lod, offset);
     }
+
+    // LOD indexes: End LOD
     for (uint32_t lod = 0; lod < lod_count; lod++) {
         uint32_t offset;
         stream_.read((char *)&offset, sizeof(uint32_t));
         end_lod.push_back(offset);
-        LOG(DEBUG) << "LOD Offset: #" << lod << " : " << offset;
+        spd_logging::logger->debug("LOD Offset: #{0} : {1}", lod, offset);
     }
 
     // Attempt to read the faces?
@@ -111,7 +113,7 @@ p3d::Model::Model(std::istream &stream_, const std::string &filename_) {
 #ifdef _DEBUG
         char buffer[64];
         sprintf_s(buffer, "\t\t%08X",  info->resolutions[lod]);
-        LOG(DEBUG) << "LOD #" << lod << ", type: " << buffer;
+        spd_logging::logger->debug("LOD #{0}, type: {1}", lod, buffer);
 #endif
         stream_.clear();
         stream_.seekg(start_lod[lod], stream_.beg);
